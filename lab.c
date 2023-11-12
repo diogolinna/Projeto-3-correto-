@@ -17,6 +17,19 @@ void removerQuebraLinha(char *str) {
     }
 }
 
+const char *getNomeEstado(enum Estado estado) {
+    switch (estado) {
+        case NAO_INICIADO:
+            return "Nao Iniciado";
+        case EM_ANDAMENTO:
+            return "Em Andamento";
+        case COMPLETO:
+            return "Completo";
+        default:
+            return "Desconhecido";
+    }
+}
+
 // Criando a opção de cadastrar as tarefas
 void cadastrarTarefa(FILE *arquivo) {
     struct Tarefa novaTarefa;
@@ -65,6 +78,23 @@ void listarTarefas(FILE *arquivo) {
         printf("Prioridade: %d\n", tarefa.prioridade);
         printf("Descricao: %s\n", tarefa.descricao);
         printf("Categoria: %s\n", tarefa.categoria);
+        printf("\n");
+    
+     // Adicionando a exibição do estado
+        switch (tarefa.estado) {
+            case NAO_INICIADO:
+                printf("Estado: Nao Iniciado\n");
+                break;
+            case EM_ANDAMENTO:
+                printf("Estado: Em Andamento\n");
+                break;
+            case COMPLETO:
+                printf("Estado: Completo\n");
+                break;
+            default:
+                printf("Estado: Desconhecido\n");
+        }
+
         printf("\n");
     }
 
