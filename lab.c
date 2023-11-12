@@ -191,3 +191,88 @@ void deletarTarefa(FILE *arquivo) {
 
     printf("Tarefa deletada com sucesso!\n");
 }
+
+void alterarTarefa(FILE *arquivo) {
+    int prioridade;
+    int opcao;
+
+    printf("Digite a prioridade da tarefa que deseja alterar: ");
+    scanf("%d", &prioridade);
+
+    struct Tarefa tarefa;
+    int tarefaEncontrada = 0;
+
+    // Fechar o arquivo antes de reabri-lo para garantir que as alterações sejam reconhecidas
+    fclose(arquivo);
+
+    // Reabrir o arquivo no modo de leitura e escrita
+    arquivo = fopen("tarefas.dat", "rb+");
+    if (arquivo == NULL) {
+        perror("Erro ao reabrir arquivo original");
+        return;
+    }
+
+    // Percorrer o arquivo para encontrar a tarefa desejada
+    while (fread(&tarefa, sizeof(struct Tarefa), 1, arquivo) == 1) {
+        if (tarefa.prioridade == prioridade) {
+            tarefaEncontrada = 1;
+            break;
+        }
+    }
+
+    if (!tarefaEncontrada) {
+        printf("Tarefa com prioridade %d não encontrada.\n", prioridade);
+        fclose(arquivo);
+        return;
+    }
+
+    // Exibir informações da tarefa antes da alteração
+    printf("Informacoes da Tarefa:\n");
+    printf("Prioridade: %d\n", tarefa.prioridade);
+    printf("Descricao: %s\n", tarefa.descricao);
+    printf("Categoria: %s\n", tarefa.categoria);
+    printf("Estado Atual: %s\n", getNomeEstado(tarefa.estado));  // Utiliza a função auxiliar
+
+    // Menu de opções para alterar campos
+    printf("Escolha o que deseja alterar:\n");
+    printf("1. Prioridade\n");
+    printf("2. Descricao\n");
+    printf("3. Categoria\n");
+    printf("4. Estado\n");
+    printf("Escolha uma opcao: ");
+    scanf("%d", &opcao);
+
+    switch (opcao) {
+        case 1:
+            printf("Digite a nova prioridade: ");
+            scanf("%d", &tarefa.prioridade);
+            break;
+        case 2:
+            printf("Digite a nova descricao: ");
+            getchar();  // Consumir o caractere de nova linha deixado pelo scanf
+            fgets(tarefa.descricao, sizeof(tarefa.descricao), stdin);
+            removerQuebraLinha(tarefa.descricao);
+            break;
+        case 3:
+            printf("Digite a nova categoria: ");
+            getchar();  // Consumir o caractere de nova linha deixado pelo scanf
+            fgets(tarefa.categoria, sizeof(tarefa.categoria), stdin);
+            removerQuebraLinha(tarefa.categoria);
+            break;
+        case 4:
+            printf("Digite o novo estado (0 para NAO_INICIADO, 1 para EM_ANDAMENTO, 2 para COMPLETO): ");
+            scanf("%d", (int*)&tarefa.estado);
+            break;
+        default:
+            printf("Opcao invalida. Nada foi alterado.\n");
+    }
+
+    // Reescrever a tarefa alterada no arquivo
+    fseek(arquivo, -sizeof(struct Tarefa), SEEK_CUR);
+    fwrite(&tarefa, sizeof(struct Tarefa), 1, arquivo);
+
+    printf("Tarefa alterada com sucesso!\n");
+
+    // Fechar o arquivo após alterar a tarefa
+    fclose(arquivo);
+}

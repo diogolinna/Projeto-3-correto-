@@ -41,4 +41,7 @@ void deletarTarefa(FILE *arquivo);
 // Definindo uma função que retorna o nome de um estado com base no valor enum Estado
 const char *getNomeEstado(enum Estado estado);
 
+//Função para alterar uma tarefa de um arquivo
+void alterarTarefa(FILE *arquivo);
+
 #endif // LAB_H
