@@ -3,7 +3,20 @@
 
 #include <stdio.h>
 
+enum Estado {
+    NAO_INICIADO,
+    EM_ANDAMENTO,
+    COMPLETO
+};
+
 // Definindo a estrutura Tarefa para representar informações sobre tarefas
+struct Tarefa {
+    int prioridade;
+    char descricao[300];
+    char categoria[100];
+    enum Estado estado;
+};
+
 struct Tarefa {
     int prioridade;
     char descricao[300];
@@ -24,5 +37,8 @@ void listarTarefas(FILE *arquivo);
 
 // Criando a opção de deletar as tarefas
 void deletarTarefa(FILE *arquivo);
+
+// Definindo uma função que retorna o nome de um estado com base no valor enum Estado
+const char *getNomeEstado(enum Estado estado);
 
 #endif // LAB_H
