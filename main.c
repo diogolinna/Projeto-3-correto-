@@ -11,14 +11,16 @@ int main() {
     int opcao;
 
     do {
-        printf("Menu:\n");
+        printf("\nMenu:\n");
         printf("1. Cadastrar Tarefa\n");
         printf("2. Listar Tarefas\n");
         printf("3. Deletar Tarefa\n");
         printf("4. Alterar Tarefa\n");
-        printf("5. Sair\n"); // Adiciona a opção de sair
-        printf("Escolha uma opcao: ");
-        scanf("%d", &opcao);
+        printf("5. Filtrar por Prioridade\n");
+        printf("6. Filtrar por Estado\n");
+        printf("7. Filtrar por Categoria\n");
+        printf("8. Filtrar por Prioridade e Categoria\n");
+        printf("9. Sair\n");
 
         switch (opcao) {
             case 1:
@@ -32,13 +34,29 @@ int main() {
                 break;
             case 4:
                 alterarTarefa(arquivo);
+                break;
             case 5:
+                filtrarPorPrioridade(arquivo);
+                break;
+            case 6:
+                filtrarPorEstado(arquivo);
+                break;
+            case 7:
+                filtrarPorCategoria(arquivo);
+                break;
+            case 8:
+                filtrarPorPrioridadeECategoria(arquivo);
+                break;
+            case 9:
+                exportarPorPrioridade(arquivo);
+                break;
+            case 10:
                 printf("Saindo do programa. Obrigado!\n");
                 break; // Adiciona a opção de sair
             default:
                 printf("Opção invalida. Tente novamente.\n");
         }
-    } while (opcao != 5); // Ajusta a condição para incluir a opção de sair
+    } while (opcao != 10); // Ajusta a condição para incluir a opção de sair
 
     fclose(arquivo);
 
